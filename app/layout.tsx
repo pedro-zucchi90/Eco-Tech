@@ -1,37 +1,36 @@
-import type { Metadata } from 'next'
-import localFont from 'next/font/local';
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import './globals.css';
+import { Inter, Roboto_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import React from 'react';
 
-const geistSans = localFont({
-  src: './fonts/GeistSans.woff2',
-  variable: '--font-geist-sans',
-  weight: '100 900',
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
 });
 
-const geistMono = localFont({
-  src: './fonts/GeistMono.woff2',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const robotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
-}
+export const metadata = {
+  title: 'EcoTech DataFlow',
+  description: 'Sistema de monitoramento e gamificação de coleta seletiva',
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${robotoMono.variable}`}>
+      <body>
         {children}
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

@@ -14,16 +14,18 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, icon: Icon, description }: StatsCardProps) {
   return (
-    <Card>
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="mt-2 text-3xl font-bold text-foreground">{value}</p>
-            {description && <p className="mt-1 text-xs text-muted-foreground">{description}</p>}
+    <Card className="shadow-none border">
+      <CardContent className="p-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 shrink-0">
+            <Icon className="h-5 w-5 text-primary" />
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-            <Icon className="h-6 w-6 text-primary" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-medium text-muted-foreground truncate">{title}</p>
+            <p className="text-xl font-bold text-foreground leading-tight">{value}</p>
+            {description && (
+              <p className="text-[11px] text-muted-foreground truncate">{description}</p>
+            )}
           </div>
         </div>
       </CardContent>

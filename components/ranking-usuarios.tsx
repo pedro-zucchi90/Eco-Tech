@@ -11,8 +11,8 @@ export function RankingUsuarios() {
   if (isLoading) {
     return (
       <Card>
-        <CardContent className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <CardContent className="flex items-center justify-center py-6">
+          <Loader2 className="h-6 w-6 animate-spin text-primary" />
         </CardContent>
       </Card>
     )
@@ -23,17 +23,17 @@ export function RankingUsuarios() {
   if (usuariosOrdenados.length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Trophy className="h-4 w-4 sm:h-5 sm:w-5" />
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+            <Trophy className="h-4 w-4" />
             Ranking de Usuários
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <TrendingUp className="mb-4 h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
-            <p className="text-base sm:text-lg font-medium text-foreground">Nenhum usuário cadastrado</p>
-            <p className="text-xs sm:text-sm text-muted-foreground">
+          <div className="flex flex-col items-center justify-center py-4 text-center">
+            <TrendingUp className="mb-2 h-8 w-8 text-muted-foreground" />
+            <p className="text-sm font-medium text-foreground">Nenhum usuário cadastrado</p>
+            <p className="text-xs text-muted-foreground">
               O ranking aparecerá aqui quando houver usuários ativos
             </p>
           </div>
@@ -51,55 +51,52 @@ export function RankingUsuarios() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-          <Trophy className="h-4 w-4 sm:h-5 sm:w-5" />
-          Ranking de Usuários - Top 10
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+          <Trophy className="h-4 w-4" />
+          Top 10 Usuários
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2 sm:space-y-3">
+        <div className="space-y-1.5">
           {usuariosOrdenados.map((usuario: any, index: number) => (
             <div
               key={usuario._id}
-              className="flex items-center justify-between rounded-lg border bg-card p-3 sm:p-4 transition-colors hover:bg-accent gap-3"
+              className="flex items-center justify-between rounded-md border bg-card px-2 py-2 sm:px-3 sm:py-2 transition-colors hover:bg-blue-50 gap-2"
             >
-              <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
                 <div
-                  className={`flex h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-muted font-bold ${getMedalColor(index)}`}
+                  className={`flex h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0 items-center justify-center rounded-full bg-muted font-bold ${getMedalColor(index)}`}
                 >
                   {index < 3 ? (
-                    <Trophy className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
                   ) : (
-                    <span className="text-sm sm:text-base">{index + 1}</span>
+                    <span className="text-xs sm:text-sm">{index + 1}</span>
                   )}
                 </div>
-
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-foreground text-sm sm:text-base truncate">{usuario.nome}</p>
-                  <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
+                  <p className="font-semibold text-foreground text-xs sm:text-sm truncate">{usuario.nome}</p>
+                  <div className="flex items-center gap-1 text-[11px] sm:text-xs text-muted-foreground">
                     <span>{usuario.coletasRealizadas} coletas</span>
                     <span>•</span>
                     <span>{usuario.pesoTotalColetado.toFixed(1)} kg</span>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <div className="text-right">
                   <div className="flex items-center gap-1">
-                    <Award className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
-                    <span className="text-lg sm:text-2xl font-bold text-primary">{usuario.pontos}</span>
+                    <Award className="h-3 w-3 text-primary" />
+                    <span className="text-base sm:text-lg font-bold text-primary">{usuario.pontos}</span>
                   </div>
-                  <Badge variant="secondary" className="mt-1 text-[10px] sm:text-xs">
+                  <Badge variant="secondary" className="mt-0.5 text-[9px] sm:text-xs px-1">
                     Nível {usuario.nivel}
                   </Badge>
                 </div>
-
                 {usuario.badges && usuario.badges.length > 0 && (
-                  <div className="hidden sm:flex gap-1">
-                    {usuario.badges.slice(0, 3).map((badge: string) => (
-                      <div key={badge} className="text-xl sm:text-2xl" title={badge}>
+                  <div className="hidden sm:flex gap-0.5">
+                    {usuario.badges.slice(0, 2).map((badge: string) => (
+                      <div key={badge} className="text-lg sm:text-xl" title={badge}>
                         {badge === "iniciante" && "🌱"}
                         {badge === "coletor" && "♻️"}
                         {badge === "heroi" && "🦸"}

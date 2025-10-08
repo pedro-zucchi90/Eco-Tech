@@ -1,4 +1,4 @@
-import { Leaf } from "lucide-react"
+import Image from "next/image"
 
 export function DashboardHeader() {
   return (
@@ -6,13 +6,13 @@ export function DashboardHeader() {
       <div className="container mx-auto px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary flex-shrink-0">
-              <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
+            <div className="flex h-14 w-14 sm:h-20 sm:w-20 items-center justify-center rounded-lg flex-shrink-0">
+              <Image src="/logo.png" alt="EcoTech" width={80} height={80} className="w-full h-full" />
             </div>
             <div>
-              <h1 className="text-base sm:text-xl font-bold text-foreground">EcoTech DataFlow</h1>
+              <h1 className="text-lg sm:text-3xl font-bold text-foreground">EcoTech</h1>
               <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                Sistema de Gestão de Coleta Seletiva
+                Dados para Gestão de Coleta Seletiva
               </p>
             </div>
           </div>

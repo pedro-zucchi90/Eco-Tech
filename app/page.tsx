@@ -53,6 +53,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background">
       <DashboardHeader />
 
+      
       <main className="container mx-auto px-4 py-4 sm:py-8">
         <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -91,6 +92,11 @@ export default function DashboardPage() {
         </div>
 
         <div className="mb-6 sm:mb-8">
+          <RelatoriosSection />
+        </div>
+
+
+        <div className="mb-6 sm:mb-8">
           <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-semibold text-foreground">Estatísticas de Gamificação</h3>
           <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
             <StatsCard
@@ -122,9 +128,6 @@ export default function DashboardPage() {
           <HistoricoColetas />
         </div>
 
-        <div className="mb-6 sm:mb-8">
-          <RelatoriosSection />
-        </div>
 
         {pontosCheios > 0 && (
           <Card className="mb-6 sm:mb-8 border-destructive bg-destructive/5">

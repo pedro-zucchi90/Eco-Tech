@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -35,8 +34,29 @@ export function RegistrarColetaDialog() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
 
+    // 🔹 Validação do nome (apenas letras e espaços)
+    const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/
+    if (!nomeRegex.test(nomeUsuario)) {
+      alert("O nome deve conter apenas letras e espaços.")
+      return
+    }
+
+    // 🔹 Validação do email (regex simples)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(emailUsuario)) {
+      alert("Digite um email válido.")
+      return
+    }
+
+    // 🔹 Validação do peso (máximo 100 kg)
+    const pesoNum = Number.parseFloat(peso)
+    if (pesoNum > 100) {
+      alert("O peso máximo permitido por cadastro é de 100 kg.")
+      return
+    }
+
+    setLoading(true)
     try {
       const response = await fetch("/api/registros-coleta", {
         method: "POST",
@@ -45,13 +65,12 @@ export function RegistrarColetaDialog() {
           nomeUsuario,
           emailUsuario,
           tipoMaterial,
-          pesoKg: Number.parseFloat(peso),
+          pesoKg: pesoNum,
           bairroId: bairroId || undefined,
         }),
       })
 
       const data = await response.json()
-
       if (data.success) {
         setCodigoGerado(data.data.codigo)
       } else {
@@ -67,14 +86,11 @@ export function RegistrarColetaDialog() {
 
   const copiarCodigo = async () => {
     if (!codigoGerado) return
-
     try {
-      // Try modern clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(codigoGerado)
         alert("Código copiado!")
       } else {
-        // Fallback for older browsers or non-secure contexts
         const textArea = document.createElement("textarea")
         textArea.value = codigoGerado
         textArea.style.position = "fixed"
@@ -83,7 +99,6 @@ export function RegistrarColetaDialog() {
         document.body.appendChild(textArea)
         textArea.focus()
         textArea.select()
-
         try {
           document.execCommand("copy")
           alert("Código copiado!")
@@ -119,42 +134,37 @@ export function RegistrarColetaDialog() {
           <span className="sm:hidden">Registrar</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xs p-4">
         <DialogHeader>
-          <DialogTitle className="text-lg sm:text-xl">Registrar Nova Coleta</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">Registrar Nova Coleta</DialogTitle>
         </DialogHeader>
 
         {!codigoGerado ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="nome">Nome do Usuário</Label>
+          <form onSubmit={handleSubmit} className="space-y-2">
+            <div className="grid grid-cols-1 gap-2">
               <Input
                 id="nome"
                 type="text"
-                placeholder="Ex: João Silva"
+                placeholder="Nome do Usuário"
                 value={nomeUsuario}
                 onChange={(e) => setNomeUsuario(e.target.value)}
                 required
+                className="text-sm"
+                autoComplete="off"
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email do Usuário</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Ex: joao@email.com"
+                placeholder="Email do Usuário"
                 value={emailUsuario}
                 onChange={(e) => setEmailUsuario(e.target.value)}
                 required
+                className="text-sm"
+                autoComplete="off"
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bairro">Bairro (opcional)</Label>
               <Select value={bairroId} onValueChange={setBairroId} disabled={loadingBairros}>
-                <SelectTrigger id="bairro">
-                  <SelectValue placeholder={loadingBairros ? "Carregando..." : "Selecione o bairro"} />
+                <SelectTrigger id="bairro" className="text-sm">
+                  <SelectValue placeholder={loadingBairros ? "Carregando..." : "Bairro (opcional)"} />
                 </SelectTrigger>
                 <SelectContent>
                   {bairros.map((bairro: any) => (
@@ -164,13 +174,9 @@ export function RegistrarColetaDialog() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="tipo">Tipo de Material</Label>
               <Select value={tipoMaterial} onValueChange={setTipoMaterial} required>
-                <SelectTrigger id="tipo">
-                  <SelectValue placeholder="Selecione o tipo" />
+                <SelectTrigger id="tipo" className="text-sm">
+                  <SelectValue placeholder="Tipo de Material" />
                 </SelectTrigger>
                 <SelectContent>
                   {TIPOS_MATERIAL.map((tipo) => (
@@ -180,59 +186,57 @@ export function RegistrarColetaDialog() {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="peso">Peso (kg)</Label>
               <Input
                 id="peso"
                 type="number"
                 step="0.1"
                 min="0.1"
-                placeholder="Ex: 5.5"
+                placeholder="Peso (kg)"
                 value={peso}
                 onChange={(e) => setPeso(e.target.value)}
                 required
+                className="text-sm"
+                autoComplete="off"
               />
             </div>
-
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full mt-2" disabled={loading} size="sm">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Gerando código...
                 </>
               ) : (
-                "Gerar Código de Coleta"
+                "Gerar Código"
               )}
             </Button>
           </form>
         ) : (
-          <div className="space-y-4">
-            <Card className="border-2 border-primary bg-primary/5">
-              <CardContent className="pt-6">
+          <div className="space-y-3">
+            <Card className="border-primary bg-primary/5">
+              <CardContent className="pt-4 pb-3 px-2">
                 <div className="flex items-center justify-center gap-2 text-center">
-                  <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  <p className="text-xs sm:text-sm font-medium text-muted-foreground">Código gerado com sucesso!</p>
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <span className="text-xs font-medium text-muted-foreground">
+                    Código gerado!
+                  </span>
                 </div>
-                <div className="mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row">
-                  <div className="rounded-lg bg-background px-4 py-3 sm:px-6 sm:py-4">
-                    <p className="font-mono text-2xl sm:text-4xl font-bold tracking-wider text-foreground">
+                <div className="mt-2 flex items-center justify-center gap-2">
+                  <span className="rounded bg-background px-3 py-2">
+                    <span className="font-mono text-xl font-bold tracking-wider text-foreground">
                       {codigoGerado}
-                    </p>
-                  </div>
+                    </span>
+                  </span>
                   <Button size="icon" variant="outline" onClick={copiarCodigo}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
-                <p className="mt-4 text-center text-xs text-muted-foreground">
-                  Válido por 24 horas. Use este código no app mobile para validar a coleta.
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Válido por 24h. Use no app mobile para validar.
                 </p>
               </CardContent>
             </Card>
-
-            <Button onClick={resetForm} className="w-full bg-transparent" variant="outline">
-              Registrar Nova Coleta
+            <Button onClick={resetForm} className="w-full" variant="outline" size="sm">
+              Nova Coleta
             </Button>
           </div>
         )}

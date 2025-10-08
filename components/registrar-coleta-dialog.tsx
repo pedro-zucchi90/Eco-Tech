@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Loader2, CheckCircle2, Copy } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import { useBairros } from "@/lib/hooks/use-bairros"
 
 const TIPOS_MATERIAL = [
   { value: "plastico", label: "Plástico" },
@@ -28,6 +29,9 @@ export function RegistrarColetaDialog() {
   const [emailUsuario, setEmailUsuario] = useState("")
   const [tipoMaterial, setTipoMaterial] = useState("")
   const [peso, setPeso] = useState("")
+  const [bairroId, setBairroId] = useState("")
+
+  const { bairros, isLoading: loadingBairros } = useBairros()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,6 +46,7 @@ export function RegistrarColetaDialog() {
           emailUsuario,
           tipoMaterial,
           pesoKg: Number.parseFloat(peso),
+          bairroId: bairroId || undefined,
         }),
       })
 
@@ -101,6 +106,7 @@ export function RegistrarColetaDialog() {
     setEmailUsuario("")
     setTipoMaterial("")
     setPeso("")
+    setBairroId("")
     setOpen(false)
   }
 
@@ -142,6 +148,22 @@ export function RegistrarColetaDialog() {
                 onChange={(e) => setEmailUsuario(e.target.value)}
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bairro">Bairro (opcional)</Label>
+              <Select value={bairroId} onValueChange={setBairroId} disabled={loadingBairros}>
+                <SelectTrigger id="bairro">
+                  <SelectValue placeholder={loadingBairros ? "Carregando..." : "Selecione o bairro"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {bairros.map((bairro: any) => (
+                    <SelectItem key={bairro._id} value={bairro._id}>
+                      {bairro.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

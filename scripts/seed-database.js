@@ -2,6 +2,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
+// Dados de seed
 const usuarios = [
   {
     nome: "João Silva",
@@ -368,8 +369,8 @@ async function seedDatabase() {
           {
             $set: {
               pontos: pontosTotal,
-              nivel: nivel,
-              badges: badges,
+              nivel,
+              badges,
               coletasRealizadas: coletasUsuario.length,
               pesoTotalColetado: pesoTotal,
               updatedAt: new Date(),

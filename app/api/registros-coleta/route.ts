@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { nomeUsuario, emailUsuario, tipoMaterial, pesoKg, pontoColetaId } = body
+    const { nomeUsuario, emailUsuario, tipoMaterial, pesoKg, pontoColetaId, bairroId } = body
 
     if (!nomeUsuario || !emailUsuario || !tipoMaterial || !pesoKg) {
       return NextResponse.json(
@@ -64,6 +64,10 @@ export async function POST(request: NextRequest) {
 
     if (pontoColetaId) {
       registro.pontoColetaId = new ObjectId(pontoColetaId)
+    }
+
+    if (bairroId) {
+      registro.bairroId = new ObjectId(bairroId)
     }
 
     const result = await db.collection<RegistroColeta>("registros_coleta").insertOne(registro)

@@ -5,6 +5,7 @@ export interface RegistroColeta {
   codigo: string
   pontoColetaId?: ObjectId
   usuarioId?: ObjectId
+  bairroId?: ObjectId
   nomeUsuario: string
   emailUsuario: string
   tipoMaterial: string
@@ -33,6 +34,10 @@ export const RegistroColetaSchema = {
         },
         usuarioId: {
           bsonType: "objectId",
+        },
+        bairroId: {
+          bsonType: "objectId",
+          description: "ID do bairro onde foi feita a coleta",
         },
         nomeUsuario: {
           bsonType: "string",

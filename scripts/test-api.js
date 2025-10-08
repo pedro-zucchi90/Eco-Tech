@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_APP_URL;
 
 const results = [];
 
@@ -190,8 +190,7 @@ async function runTests() {
   console.log("RESULTADOS DOS TESTES");
   console.log("=".repeat(60));
 
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i];
+  for (const result of results) {
     console.log(`\n${result.status} ${result.method} ${result.endpoint}`);
     console.log(`   Status: ${result.statusCode}`);
     console.log(`   ${result.message}`);

@@ -1,6 +1,6 @@
 const { MongoClient, ObjectId } = require("mongodb");
 
-const MONGODB_URI = "mongodb://127.0.0.1:27017/ecotech_definitivo";
+const MONGODB_URI = "Seu URI mongo";
 
 // Dados de seed
 const usuarios = [

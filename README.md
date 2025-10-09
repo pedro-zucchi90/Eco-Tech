@@ -42,7 +42,7 @@ Edite `.env.local` e adicione sua connection string do MongoDB:
 
 \`\`\`
 MONGODB_URI=mongodb://localhost:27017/ecotech_dataflow
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+APP_URL=http://localhost:3000
 \`\`\`
 
 4. Execute o seed do banco de dados:

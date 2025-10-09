@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const dataFim = searchParams.get("dataFim")
 
     // Buscar dados do relatório
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    const baseUrl = process.env.APP_URL || "http://localhost:3000"
     let url = `${baseUrl}/api/relatorios?tipo=${tipo}`
 
     if (dataInicio) url += `&dataInicio=${dataInicio}`
